@@ -17,8 +17,6 @@ export default function Compendium() {
   const [types, setTypes] = useState([]);
   const [selectedType, setSelectedType] = useState('all');
   
-  const [name, setName] = useState('');
-
 
    //if (pokemons.count !== 0) {
     useEffect(() => {
@@ -28,7 +26,7 @@ export default function Compendium() {
          setLoading(false);
        };
   getPokemon();
-     },[pokemons] );
+     },[] );
   
 
      useEffect(() => {
@@ -64,21 +62,17 @@ export default function Compendium() {
    const filterChange = (value) => {
      setSelectedType(value);
    }
-  const handleNameChange = (value) => {
-    setSearchName(value);
-    console.log(searchName);
-  }
-
   const handleSubmit = async (event) => {
     setLoading(true);
-    setName(searchName);
-    console.log('name', name);
+    console.log('searchname', searchName);
     event.preventDefault();
     
-    const searchResults = await fetchSearchPokemon(name);
+    const searchResults = await fetchSearchPokemon(searchName);
     console.log(searchResults);
     setPokemons(searchResults);
     setLoading(false);
+    setSearchName('');
+    setSelectedType('');
       /*.then((searchedPokemons) => {
         this.setState({pokemons: searchedPokemons});
       })
@@ -99,10 +93,9 @@ export default function Compendium() {
           <h1 className='titleText'>Alchemy Compendium</h1>
         </div>
         <Controls
-          name={name}
           handleSubmit={handleSubmit}
-          //setSearchName={setSearchName}
-          handleNameChange={handleNameChange}
+          searchName={searchName}
+          handleNameChange={setSearchName}
           types={types}
           setSelectedType={setSelectedType}
           selectedType={selectedType}
