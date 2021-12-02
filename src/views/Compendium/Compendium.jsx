@@ -16,61 +16,73 @@ export default function Compendium() {
   const [searchName, setSearchName] = useState('');
   const [types, setTypes] = useState([]);
   const [selectedType, setSelectedType] = useState('all');
+  
 
-  //TODO 😖 help!
-  // if (pokemons.count !== 0) {
-  //   useEffect(() => {
-  //     const getPokemon = async () => {
-  //       const pokemonList = await fetchPokemon();
-  //        this.setState({pokemons: pokemonList});
-  //       setLoading(false);
-  //     };
-  //     getPokemon();
-  //   }, [pokemons]);
-  // }
+   //if (pokemons.count !== 0) {
+    useEffect(() => {
+       const getPokemon = async () => {
+         const pokemonList = await fetchPokemon();
+          setPokemons(pokemonList);
+         setLoading(false);
+       };
+  getPokemon();
+     },[] );
+  
 
-  //TODO 😖 help!
-  //   useEffect(async () => {
-  //      function getTypes() {
-  //       const pokemonTypes = fetchTypes();
-  //       setTypes(pokemonTypes);
-  //     }
-  //     getTypes();
-  //   }, []);
+     useEffect(() => {
+        async function getTypes() {
+         const pokemonTypes = await fetchTypes();
+         console.log(pokemonTypes);
+         setTypes(pokemonTypes);
+       }
+       getTypes();
+     }, []);
 
-  //TODO 😖 help!
-  // useEffect(() => {
-  //   async function getFilteredPokemon() {
-  //     if (!selectedType) return;
-  //     setLoading(true);
+ 
+   useEffect(() => {
+    async function getFilteredPokemon() {
+      if (!selectedType) return;
+      setLoading(true);
 
-  //     if (selectedType !== 'all') {
-  //       const filteredPokemon = await fetchFilteredPokemon(selectedType);
-  //       setPokemons(filteredPokemon);
-  //     } else {
-  //       const pokemonList = await fetchPokemon();
-  //       this.setState({pokemons: pokemonList});
-  //     }
-  //     setLoading(false);
-  //     setSort('');
-  //   }
+       if (selectedType !== 'all') {
+        const filteredPokemon = await fetchFilteredPokemon(selectedType);
+        console.log(filteredPokemon);
+         setPokemons(filteredPokemon);
+       } else {
+         const pokemonList = await fetchPokemon();
+         setPokemons(pokemonList);
+       }
+       setLoading(false);
+       //setSort('');
+     }
 
-  //   getFilteredPokemon();
-  // }, [selectedType]);
+     getFilteredPokemon();
+   }, [selectedType]);
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
+   const filterChange = (value) => {
+     setSelectedType(value);
+   }
+  const handleSubmit = async (event) => {
     setLoading(true);
-    fetchSearchPokemon(searchName)
-      .then((searchedPokemons) => {
+    console.log('searchname', searchName);
+    event.preventDefault();
+    
+    const searchResults = await fetchSearchPokemon(searchName);
+    console.log(searchResults);
+    setPokemons(searchResults);
+    setLoading(false);
+    setSearchName('');
+    setSelectedType('');
+      /*.then((searchedPokemons) => {
         this.setState({pokemons: searchedPokemons});
       })
       .catch((error) => {})
       .finally(() => {
-        setLoading(false);
-        setSearchName('');
+          setLoading(false);
+      setSearchName('');
         setSelectedType('');
-      });
+      });*/
+      
   };
 
   return (
@@ -81,12 +93,13 @@ export default function Compendium() {
           <h1 className='titleText'>Alchemy Compendium</h1>
         </div>
         <Controls
-          name={searchName}
           handleSubmit={handleSubmit}
+          searchName={searchName}
           handleNameChange={setSearchName}
           types={types}
-          filterChange={setSelectedType}
+          setSelectedType={setSelectedType}
           selectedType={selectedType}
+          filterChange={filterChange}
         />
         {loading ? (
           <code>Search for the bugs in the code!</code>
