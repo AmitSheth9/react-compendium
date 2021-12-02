@@ -1,7 +1,7 @@
 import React from 'react'
 import FilterForm from '../Forms/FilterForm'
 import SearchForm from '../Forms/SearchForm'
-import SortForm from '../Forms/SortForm'
+//import SortForm from '../Forms/SortForm'
 import './Controls.css'
 
 export default function Controls({

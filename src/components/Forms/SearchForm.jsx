@@ -5,10 +5,8 @@ export default function SearchForm({ name, handleSubmit, handleNameChange }) {
       <label htmlFor="pokename">Name:</label>
       <input
         id="pokename"
-        name="name"
         type="text"
         onChange={(e) => handleNameChange(e.target.value)}
-        value={name}
       />
       <button type="submit">PokeSearch!</button>
     </form>

@@ -21,7 +21,7 @@ export const fetchPokemon = async () => {
       );
 
       const pokemonData = await fetchedPokemon.json();
-
+        console.log('fetchPokemon', pokemonData)
       // Need to filter mega pokemon
       if (pokemonData.count > 1) {
         const exactPokemon = pokemonData.results.find(
@@ -45,14 +45,15 @@ export const fetchSearchPokemon = (pokemonName) => {
     .then((pokemonData) => {
       const {results} = pokemonData;
       const pokemonResults = results.map((pokemon) => pokeMunger(pokemon));
+      console.log(pokemonResults);
       return pokemonResults;
     });
 };
 
 export const fetchTypes = async () => {
-  const res = fetch(`https://pokedex-alchemy.herokuapp.com/api/pokedex/types`);
-
-  const pokemonTypes = res.json();
+  const res = await fetch(`https://pokedex-alchemy.herokuapp.com/api/pokedex/types`);
+  
+  const pokemonTypes = await res.json();
 
   // get random types
   const randomTypes = pokemonTypes
